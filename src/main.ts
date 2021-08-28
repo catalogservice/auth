@@ -7,8 +7,8 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors();
   const config = new DocumentBuilder()
-    .setTitle('Catalog User Service')
-    .setDescription('User service for catalog')
+    .setTitle('Catalog Authentication Service')
+    .setDescription('Authentication service for catalog')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
