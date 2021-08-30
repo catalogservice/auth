@@ -2,14 +2,14 @@ import { HttpService } from "@nestjs/axios";
 import { Inject, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { ClientProxy } from "@nestjs/microservices";
-import { userHttpService } from "./http.service";
+import { UserHttpService } from "./http.service";
 
 @Injectable()
 export class UserService {
     constructor(
         private httpService: HttpService,
         private configService: ConfigService,
-        private userHttp: userHttpService,
+        private userHttp: UserHttpService,
         @Inject('AUTH_SERVICE') private readonly client: ClientProxy
     ) { }
 

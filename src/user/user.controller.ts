@@ -1,4 +1,5 @@
 import { Body, Controller, Inject, Post } from "@nestjs/common";
+import { BcryptService } from "./bcrypt.service";
 import { LoginDto } from "./dto/loginDto";
 import { RegisterDto } from "./dto/registerDto";
 import { UserService } from "./user.service";
@@ -6,7 +7,8 @@ import { UserService } from "./user.service";
 @Controller('user')
 export class UserController {
     constructor(
-        private userService: UserService
+        private userService: UserService,
+        private bcryptService: BcryptService
     ) { }
     @Post('/login')
     async login(@Body() body: LoginDto) {
@@ -20,7 +22,9 @@ export class UserController {
         let response = await this.userService.getUserByUsername(body.username);
         if (!response.data) return 'no response';
         if (response.data._id) return 'user already exists';
-        this.userService.createUser(body)
+        let newUser:any = body;
+        newUser.password = this.bcryptService.hash(body.password)
+        this.userService.createUser(newUser)
         return 'success';
     }
 }

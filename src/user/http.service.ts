@@ -3,7 +3,7 @@ import { ConfigService } from "@nestjs/config";
 import axios, { AxiosInstance } from "axios";
 
 @Injectable()
-export class userHttpService {
+export class UserHttpService {
     declare http: AxiosInstance
     constructor(
         private configService: ConfigService
