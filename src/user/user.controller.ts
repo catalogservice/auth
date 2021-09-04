@@ -20,7 +20,7 @@ export class UserController {
         let dbUserResponse = await this.userService.getUserByUsername(body.username);
         if (!dbUserResponse.data) return res.send('no response');
         let { password } = dbUserResponse.data;
-        if (!password) return res.send(dbUserResponse);
+        if (!password) return res.send(dbUserResponse.data);
         if (!this.bcryptService.compare(body.password, password)) return res.send('password does not match');
         let userPayload: any = { username: dbUserResponse.data.username, first_name: dbUserResponse.data.first_name, last_name: dbUserResponse.data.last_name }
         if (dbUserResponse.data.middle_name) userPayload.middle_name = dbUserResponse.data.middle_name;
