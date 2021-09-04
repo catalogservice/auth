@@ -20,6 +20,7 @@ export class UserController {
         let dbUserResponse = await this.userService.getUserByUsername(body.username);
         if (!dbUserResponse.data) return res.send('no response');
         let { password } = dbUserResponse.data;
+        if (!password) return res.send(dbUserResponse);
         if (!this.bcryptService.compare(body.password, password)) return res.send('password does not match');
         let userPayload: any = { username: dbUserResponse.data.username, first_name: dbUserResponse.data.first_name, last_name: dbUserResponse.data.last_name }
         if (dbUserResponse.data.middle_name) userPayload.middle_name = dbUserResponse.data.middle_name;
@@ -42,12 +43,12 @@ export class UserController {
     @Get('/me')
     async getCurrentUser(@Req() req: Request) {
         let authorization = req.headers['authorization'];
-        if(!authorization) return "no authorization found";
-        try{
+        if (!authorization) return "no authorization found";
+        try {
             let jwtTokenPayload = this.jwtService.verify(authorization.split(' ')[1]);
             let response = await this.userService.getUserByUsername(jwtTokenPayload.username);
             return response.data;
-        }catch(e){
+        } catch (e) {
             return e.message
         }
     }
